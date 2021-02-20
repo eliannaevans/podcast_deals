@@ -17,4 +17,9 @@ class PodcastSpider(scrapy.Spider):
             yield response.follow(url=link, callback=self.parse_episodes)
             
     def parse_episodes(self, response):
-        pass
+        all_links = response.css('html-blob//a::attr(href)').extract()
+        
+        text_file = 'scrapedLinks.txt'
+        with open(text_file, 'wb') as fout:
+            for link in all_links:
+                fout.write(link + ',')
